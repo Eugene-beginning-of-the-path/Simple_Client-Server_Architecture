@@ -7,6 +7,7 @@ The main work stages of this program:
    Basic socket keeps listening to any requests to connect to Server from web.
    
 
+
 Message exchange from Client to Server and from Server to Client:
 1. Client sends to Server a message(immitation of a request). Client displays the size of a sent message to Server and his size in bytes.
 2. Server successfully receives the message from Client and displays received the message and his size in bytes. 

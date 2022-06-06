@@ -8,7 +8,7 @@ The main work stages of this program:
    
 
 Message exchange from Client to Server and from Server to Client:
-1)Client sends to Server a message(immitation of a request). Client displays the size of a sent message to Server and his size in bytes.
-2)Server successfully receives the message from Client and displays received the message and his size in bytes. 
-3)Server also sends a message to Client and shut down socket of Client.
-4)Client also successfully receives the message from Server and displays his text and size in bytes, and it shut down socket with Server.
+1. Client sends to Server a message(immitation of a request). Client displays the size of a sent message to Server and his size in bytes.
+2. Server successfully receives the message from Client and displays received the message and his size in bytes. 
+3. Server also sends a message to Client and shut down socket of Client.
+4. Client also successfully receives the message from Server and displays his text and size in bytes, and it shut down socket with Server.

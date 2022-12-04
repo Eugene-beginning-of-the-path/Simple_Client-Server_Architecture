@@ -1,4 +1,4 @@
-﻿#define WIN32_LEAN_AND_MEAN
+﻿#define WIN32_LEAN_AND_MEAN //Макрос для компиляции сетевых заголовков - требование Micro 
 
 #include <iostream>
 #include <windows.h>
@@ -12,19 +12,29 @@ using std::endl;
 int main()
 {
 	cout << "Client is starting..." << endl;
+
+	//------------------------------------------
 	WSADATA wsadata;
-	if (WSAStartup(MAKEWORD(2, 2), &wsadata) != 0) //открыли интерфесы для работы с сокетами windows 
-	{
+	if (WSAStartup(MAKEWORD(2, 2), &wsadata) != 0) //просто открыли интерфесы для работы с сокетами windows
+	{											   //в будущем никак не юзаем это
 		cout << "Error in initialization of WinSock interface" << endl;
-		return 1;
+		return 1; //возвращаем в main код ошибки, если интерфейсы не открылись 
 	}
+	//------------------------------------------
 
+
+
+	//----класс ADDRINFO хранит информацию о сокете, который мы будем искать----
 	ADDRINFO hints; //выставляем параметры для поиска сокета на стороне сервера 
-	ZeroMemory(&hints, sizeof(hints));
+	ZeroMemory(&hints, sizeof(hints)); //"зануляем" поля ADDRINFO, чтобы не указывать все параметы
 	hints.ai_family = AF_INET; //IPv4
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_protocol = IPPROTO_TCP;
+	hints.ai_socktype = SOCK_STREAM; //Потоковый сокет для передачи данных
+	hints.ai_protocol = IPPROTO_TCP; 
+	//--------------------------------------------------------------------------
 
+
+
+	//--------------------------------------------------------------------------
 	ADDRINFO* addrResult;
 	//ищем на стороне сервера сокет, с нужными нам параметрами, переданными через hints
 	//addrResult получит сокет(-ы), удовлетворяющие нашему запросу 
@@ -32,9 +42,10 @@ int main()
 	if (errorStat != 0)
 	{
 		cout << "getaddrinfo failed with error" << endl;
-		WSACleanup();
+		WSACleanup(); //этим мы закрываем WSAStartup();
 		return 1;
 	}
+	//--------------------------------------------------------------------------
 
 	SOCKET toServerSocket = INVALID_SOCKET; //создаем сокет и временно его закрываем 
 	toServerSocket = socket(addrResult->ai_family, addrResult->ai_socktype, addrResult->ai_protocol); //создаем сокет на базе найденного Сервер-сокета addrResult
@@ -92,7 +103,7 @@ int main()
 	{
 		ZeroMemory(recvBuffer, sizeof(recvBuffer));
 		errorStat = recv(toServerSocket, recvBuffer, 512, 0);
-		if (errorStat > 0)
+		if (errorStat > 0) //Все умпешно принимается
 		{
 			cout << "Received a message from Server (4):" << endl;
 			cout << "Received " << errorStat << " bytes" << endl;

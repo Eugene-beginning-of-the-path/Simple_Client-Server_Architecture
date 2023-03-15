@@ -1,9 +1,11 @@
-﻿#define WIN32_LEAN_AND_MEAN //Макрос для компиляции сетевых заголовков - требование Micro 
+﻿#define WIN32_LEAN_AND_MEAN //Макрос для компиляции сетевых заголовков - требование Micro
+//т.е. в библиотеках где то находится условия компиляции (#ifdef...#endif), которую активируют
+//определением соответствующего макроса
 
 #include <iostream>
 #include <windows.h>
-#include <WinSock2.h>
-#include <WS2tcpip.h>
+#include <WinSock2.h> //актуальные функции для работы с сокетами
+#include <WS2tcpip.h> //содержит API для работы протокола TCP/IP(переводит данные в формат понимаемый протоколом)
 
 
 using std::cout;
@@ -14,7 +16,7 @@ int main()
 	cout << "Client is starting..." << endl;
 
 	//------------------------------------------
-	WSADATA wsadata;
+	WSADATA wsadata; //инициализация интерфейсов сокетов
 	if (WSAStartup(MAKEWORD(2, 2), &wsadata) != 0) //просто открыли интерфесы для работы с сокетами windows
 	{											   //в будущем никак не юзаем это
 		cout << "Error in initialization of WinSock interface" << endl;
@@ -29,7 +31,7 @@ int main()
 	ZeroMemory(&hints, sizeof(hints)); //"зануляем" поля ADDRINFO, чтобы не указывать все параметы
 	hints.ai_family = AF_INET; //IPv4
 	hints.ai_socktype = SOCK_STREAM; //Потоковый сокет для передачи данных
-	hints.ai_protocol = IPPROTO_TCP; 
+	hints.ai_protocol = IPPROTO_TCP; //указывается протокол TCP
 	//--------------------------------------------------------------------------
 
 

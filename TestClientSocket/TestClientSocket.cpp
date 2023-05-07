@@ -39,7 +39,8 @@ int main()
 	//--------------------------------------------------------------------------
 	ADDRINFO* addrResult;
 	//ищем на стороне сервера сокет, с нужными нам параметрами, переданными через hints
-	//addrResult получит сокет(-ы), удовлетворяющие нашему запросу 
+	//структура данных addrResult получит сокет(-ы), удовлетворяющие нашему запросу
+	//addResult-->ai_next для перебора нескольких полученных сокетов, с которым мы можем подкл. 
 	int errorStat = getaddrinfo("localhost", "666", &hints, &addrResult);
 	if (errorStat != 0)
 	{
@@ -58,7 +59,8 @@ int main()
 		freeaddrinfo(addrResult);
 		return 1;
 	}
-
+	
+	//addrResult->ai_addr хранит имя хоста (адрес, куда стучимся на подключение) 
 	errorStat = connect(toServerSocket, addrResult->ai_addr, (int)addrResult->ai_addrlen);
 	if (errorStat == SOCKET_ERROR)
 	{
@@ -105,7 +107,7 @@ int main()
 	{
 		ZeroMemory(recvBuffer, sizeof(recvBuffer));
 		errorStat = recv(toServerSocket, recvBuffer, 512, 0);
-		if (errorStat > 0) //Все умпешно принимается
+		if (errorStat > 0) //Все уcпешно принимается
 		{
 			cout << "Received a message from Server (4):" << endl;
 			cout << "Received " << errorStat << " bytes" << endl;
